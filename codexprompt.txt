@@ -1,0 +1,93 @@
+You are ChatGPT-Codex, writing production-grade code inside a git-controlled container.
+
+╔══════════════════════════════════════════════════════════════════════╗
+║  A. WORKFLOW RULES  (summarised from system instructions)           ║
+╠──────────────────────────────────────────────────────────────────────╣
+║ • Work in the current branch; DO NOT create new branches.           ║
+║ • Use `git add/commit` for every change; leave the work-tree clean. ║
+║ • If a pre-commit hook fails, fix and recommit.                     ║
+║ • Obey any AGENTS.md files whose scope covers the files you touch.  ║
+║ • Respect coding-style or testing commands declared there.          ║
+║ • Wait for each terminal command to finish before sending “DONE”.   ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+╔══════════════════════════════════════════════════════════════════════╗
+║  B. PROJECT OVERVIEW (IEEE-830 layout)                              ║
+╠──────────────────────────────────────────────────────────────────────╣
+║ 0. Scope & Motivation                                               ║
+║    • **Parts Forecast** – parse AMOS CSVs, predict material demand, ║
+║      highlight shortages per 1-, 2-, 3-, 6-month window.            ║
+║    • **Maintenance Taskings** – assign forecast-derived checks to   ║
+║      Line vs Minor Maintenance, respecting hangar slots, labour &   ║
+║      editable constraint rules.                                     ║
+║    • **User Management & Security** – Microsoft Entra ID (OIDC) &   ║
+║      Google OAuth 2.0 (PKCE) SSO plus local creds; roles:           ║
+║      Planner, Supervisor, Admin.                                    ║
+║                                                                     ║
+║ 1. Functional Spec                                                  ║
+║    1.1 Actors — Planner, Supervisor, Admin.                         ║
+║    1.2 Inputs — stock_aep_*.csv, stock_eze_*.csv, forecast_*.csv.   ║
+║    1.3 Behaviour                                                    ║
+║        ▸ On upload inspect header:                                  ║
+║          – column **AEP Qty** → `AEP_<UTC-TS>.csv`                  ║
+║          – column **EZE Qty** → `EZE_<UTC-TS>.csv`                  ║
+║          – filename/column **Forecast** → `Forecast_<UTC-TS>.csv`   ║
+║        ▸ Persist data, serve JSON at `/api/parts/latest` &          ║
+║          `/api/taskings/latest`.                                    ║
+║        ▸ UI shows MUI Data Grid + D3 heat-map; XLSX export optional.║
+║    1.4 Outputs — live tables + heat-map, optional                   ║
+║        `parts_forecast.xlsx`, `maint_taskings.xlsx`.                ║
+║    1.5 Constraints — ≤ 2 s/10 k-row on 2 vCPU; rules editable in    ║
+║        admin; ≥ 99.5 % uptime.                                      ║
+║                                                                     ║
+║ 2. Technical Spec (high-level)                                      ║
+║    • Backend: Django 4 + DRF; PostgreSQL 16.                        ║
+║    • Front-end: React 18, MUI Data Grid (responsive) & React D3     ║
+║      heat-map.                                                      ║
+║    • Auth: Entra ID OIDC + Google OAuth 2.0 PKCE.                   ║
+║    • Styling: Bright (#e8f3f3 #fbfcfc #aed6f1) & Dark (#212f3d       ║
+║      #1f618d) themes; WCAG 2.2 contrast ≥ 4.5 : 1.                  ║
+║    • Docs: Google/NumPy docstrings → Sphinx + Napoleon.             ║
+║    • Security: comply with OWASP Top-Ten 2021/2025.                 ║
+║                                                                     ║
+║ 3. Deliverables                                                     ║
+║    ▸ Clean git repo with Django app “maintu”, React front-end,      ║
+║      Docker assets and CI scripts.                                  ║
+║    ▸ Passing unit + e2e + security tests.                           ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+╔══════════════════════════════════════════════════════════════════════╗
+║  C. STEP-BY-STEP INSTALL / DEPLOYMENT GUIDE (Ubuntu 22.04)          ║
+╠──────────────────────────────────────────────────────────────────────╣
+║ 1. **Base OS**                                                      ║
+║    sudo apt update && sudo apt upgrade -y                           ║
+║ 2. **Docker Engine + Compose v2**                                   ║
+║    follow official docs, then `docker compose version` to verify:contentReference[oaicite:0]{index=0}.║
+║ 3. **PostgreSQL 16** – add PGDG repo & install server/client:contentReference[oaicite:1]{index=1}.║
+║ 4. **Node 20 LTS** – via NodeSource or nvm.                         ║
+║ 5. **Clone repo** & create `.env` with DB URL, OAuth secrets.       ║
+║ 6. **Build images** → `docker compose build`, then                  ║
+║    `docker compose up -d`.                                          ║
+║ 7. **Run migrations** & create superuser.                           ║
+║ 8. **Reverse-proxy** – Nginx → Gunicorn socket (see DigitalOcean    ║
+║    guide):contentReference[oaicite:2]{index=2}.                                           ║
+║ 9. **TLS** – Certbot/Nginx plugin for `maintu.example.com`:contentReference[oaicite:3]{index=3}.║
+║10. **Smoke-test** upload CSV, view grid & heat-map, test SSO.       ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+╔══════════════════════════════════════════════════════════════════════╗
+║  D. CODING & DOCUMENTATION RULES                                    ║
+╠──────────────────────────────────────────────────────────────────────╣
+║ • Use type-hints (PEP 484) and Google-style docstrings; Sphinx      ║
+║   Napoleon will render them:contentReference[oaicite:4]{index=4}.                         ║
+║ • Rename uploads via `upload_to` callable per Django pattern        ║
+║   (see StackOverflow example):contentReference[oaicite:5]{index=5}.                       ║
+║ • Follow IEEE-830 section headers in comments where helpful:contentReference[oaicite:6]{index=6}.║
+║ • Make UI responsive with MUI breakpoints:contentReference[oaicite:7]{index=7} and follow ║
+║   Material Design grid rules:contentReference[oaicite:8]{index=8}.                       ║
+║ • Build heat-map with React + D3 tutorial as reference:contentReference[oaicite:9]{index=9}.║
+║ • Leverage Entra ID OIDC flow:contentReference[oaicite:10]{index=10} & Google OAuth 2.0     ║
+║   incremental scopes:contentReference[oaicite:11]{index=11}.                                  ║
+║ • Ensure colour contrast ≥ 4.5 : 1 per WCAG 2.2:contentReference[oaicite:12]{index=12}.      ║
+║ • Mitigate OWASP Top-Ten risks:contentReference[oaicite:13]{index=13}.                      ║
+╚══════════════════════════════════════════════════════════════════════╝
