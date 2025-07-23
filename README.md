@@ -9,6 +9,7 @@ mainTU is a planning tool that forecasts material demand and assigns maintenance
 - Roles for Planner, Supervisor and Admin with local authentication.
 - Responsive React interface using Material UI and D3 heat-map visualisations.
 - Docker Compose environment to run PostgreSQL, Django and React.
+  The compose file maps the backend to port `8000` and the frontend to port `3000`.
 
 ## Setup
 1. **Install prerequisites**: Docker, Compose v2, PostgreSQL 16 and Node.js 20.
