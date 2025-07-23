@@ -3,5 +3,11 @@ from .models import UploadedCSV
 from .serializers import UploadedCSVSerializer
 
 class UploadedCSVViewSet(viewsets.ModelViewSet):
-    queryset = UploadedCSV.objects.all().order_by("-uploaded_at")[:5]
+    """API view set for uploaded CSVs."""
+
     serializer_class = UploadedCSVSerializer
+
+    def get_queryset(self):
+        """Return only the five newest records."""
+
+        return UploadedCSV.objects.order_by("-uploaded_at")[:5]
