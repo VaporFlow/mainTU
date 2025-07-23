@@ -11,6 +11,8 @@ __pycache__/
 
 # Node
 node_modules/
+frontend/build/
+postgres_data/
 
 # Logs and local
 *.log

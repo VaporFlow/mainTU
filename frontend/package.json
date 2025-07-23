@@ -1,0 +1,9 @@
+{
+  "name": "maintu-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "echo 'Frontend placeholder' && sleep infinity",
+    "test": "echo 'No tests yet'"
+  }
+}
