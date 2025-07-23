@@ -47,3 +47,23 @@ class CleanupCSVCommandTests(TestCase):
         expected = [f"test{i}.csv" for i in reversed(range(2, 7))]
         self.assertEqual(newest[:5], expected)
 
+
+class UploadedCSVViewSetTests(TestCase):
+    """Test the UploadedCSVViewSet filtering logic."""
+
+    @override_settings(MEDIA_ROOT=tempfile.gettempdir())
+    def test_list_returns_latest_five(self) -> None:
+        for i in range(7):
+            UploadedCSV.objects.create(
+                file=SimpleUploadedFile(f"file{i}.csv", b"a,b,c"),
+                original_name=f"file{i}.csv",
+            )
+
+        response = self.client.get("/api/parts/")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(len(data), 5)
+        names = [row["original_name"] for row in data]
+        expected = [f"file{i}.csv" for i in reversed(range(2, 7))]
+        self.assertEqual(names, expected)
+
