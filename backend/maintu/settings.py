@@ -89,16 +89,24 @@ WSGI_APPLICATION = "maintu.wsgi.application"
 
 url = urlparse(DATABASE_URL)
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": url.path.lstrip("/"),
-        "USER": url.username,
-        "PASSWORD": url.password,
-        "HOST": url.hostname,
-        "PORT": str(url.port or ""),
+if url.scheme == "sqlite":
+    db_name = url.netloc or url.path.lstrip("/") or ":memory:"
+    if not db_name.startswith("/") and db_name != ":memory:":
+        db_name = BASE_DIR / db_name
+    DATABASES = {
+        "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": str(db_name)}
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": url.path.lstrip("/"),
+            "USER": url.username,
+            "PASSWORD": url.password,
+            "HOST": url.hostname,
+            "PORT": str(url.port or ""),
+        }
+    }
 
 
 # Password validation
