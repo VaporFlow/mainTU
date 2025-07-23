@@ -62,16 +62,16 @@ You are ChatGPT-Codex, writing production-grade code inside a git-controlled con
 ║ 1. **Base OS**                                                      ║
 ║    sudo apt update && sudo apt upgrade -y                           ║
 ║ 2. **Docker Engine + Compose v2**                                   ║
-║    follow official docs, then `docker compose version` to verify:contentReference[oaicite:0]{index=0}.║
-║ 3. **PostgreSQL 16** – add PGDG repo & install server/client:contentReference[oaicite:1]{index=1}.║
+║    follow official docs, then `docker compose version` to verify:https://docs.docker.com/engine/install/ubuntu/.║
+║ 3. **PostgreSQL 16** – add PGDG repo & install server/client:https://www.postgresql.org/download/linux/ubuntu/.║
 ║ 4. **Node 20 LTS** – via NodeSource or nvm.                         ║
 ║ 5. **Clone repo** & create `.env` with DB URL, OAuth secrets.       ║
 ║ 6. **Build images** → `docker compose build`, then                  ║
 ║    `docker compose up -d`.                                          ║
 ║ 7. **Run migrations** & create superuser.                           ║
 ║ 8. **Reverse-proxy** – Nginx → Gunicorn socket (see DigitalOcean    ║
-║    guide):contentReference[oaicite:2]{index=2}.                                           ║
-║ 9. **TLS** – Certbot/Nginx plugin for `maintu.example.com`:contentReference[oaicite:3]{index=3}.║
+║    guide):https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-22-04.                                           ║
+║ 9. **TLS** – Certbot/Nginx plugin for `maintu.example.com`:https://certbot.eff.org/instructions?ws=nginx&os=ubuntu-22.04.║
 ║10. **Smoke-test** upload CSV, view grid & heat-map, test SSO.       ║
 ╚══════════════════════════════════════════════════════════════════════╝
 
@@ -79,15 +79,15 @@ You are ChatGPT-Codex, writing production-grade code inside a git-controlled con
 ║  D. CODING & DOCUMENTATION RULES                                    ║
 ╠──────────────────────────────────────────────────────────────────────╣
 ║ • Use type-hints (PEP 484) and Google-style docstrings; Sphinx      ║
-║   Napoleon will render them:contentReference[oaicite:4]{index=4}.                         ║
+║   Napoleon will render them:https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html.                         ║
 ║ • Rename uploads via `upload_to` callable per Django pattern        ║
-║   (see StackOverflow example):contentReference[oaicite:5]{index=5}.                       ║
-║ • Follow IEEE-830 section headers in comments where helpful:contentReference[oaicite:6]{index=6}.║
-║ • Make UI responsive with MUI breakpoints:contentReference[oaicite:7]{index=7} and follow ║
-║   Material Design grid rules:contentReference[oaicite:8]{index=8}.                       ║
-║ • Build heat-map with React + D3 tutorial as reference:contentReference[oaicite:9]{index=9}.║
-║ • Leverage Entra ID OIDC flow:contentReference[oaicite:10]{index=10} & Google OAuth 2.0     ║
-║   incremental scopes:contentReference[oaicite:11]{index=11}.                                  ║
-║ • Ensure colour contrast ≥ 4.5 : 1 per WCAG 2.2:contentReference[oaicite:12]{index=12}.      ║
-║ • Mitigate OWASP Top-Ten risks:contentReference[oaicite:13]{index=13}.                      ║
+║   (see StackOverflow example):https://stackoverflow.com/a/15444477.                       ║
+║ • Follow IEEE-830 section headers in comments where helpful:https://en.wikipedia.org/wiki/Software_requirements_specification#IEEE_830-1998.║
+║ • Make UI responsive with MUI breakpoints:https://mui.com/material-ui/customization/breakpoints/ and follow ║
+║   Material Design grid rules:https://material.io/design/layout/responsive-layout-grid.html.                       ║
+║ • Build heat-map with React + D3 tutorial as reference:https://www.pluralsight.com/guides/creating-a-heatmap-with-react-d3.║
+║ • Leverage Entra ID OIDC flow:https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc & Google OAuth 2.0     ║
+║   incremental scopes:https://developers.google.com/identity/protocols/oauth2/web-server#incrementalAuth.                                  ║
+║ • Ensure colour contrast ≥ 4.5 : 1 per WCAG 2.2:https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html.      ║
+║ • Mitigate OWASP Top-Ten risks:https://owasp.org/www-project-top-ten/.                      ║
 ╚══════════════════════════════════════════════════════════════════════╝
