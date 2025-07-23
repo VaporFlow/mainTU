@@ -17,6 +17,7 @@ mainTU is a planning tool that forecasts material demand and assigns maintenance
    ```bash
    docker compose up -d --build
    ```
+   The backend is reachable on `http://localhost:8000` and the frontend on `http://localhost:3000`.
 4. **Apply migrations** and create a superuser:
    ```bash
    docker compose exec backend python manage.py migrate
