@@ -3,7 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "echo 'Frontend placeholder' && sleep infinity",
-    "test": "echo 'No tests yet'"
+    "start": "react-scripts start",
+    "test": "react-scripts test --env=jsdom"
+  },
+  "dependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "jest": "^27.5.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-scripts": "^5.0.1"
   }
 }
