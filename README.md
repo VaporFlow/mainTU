@@ -1,30 +1,36 @@
 # mainTU
 
 ## Overview
-This repository demonstrates a simple setup for the **mainTU** project described in
-`codexprompt.txt`. The app uses a Django backend and React frontend, packaged
-with Docker for easy deployment.
+mainTU is a planning tool that forecasts material demand and assigns maintenance tasks. It uses a Django backend and React frontend as described in `codexprompt.txt`.
+
+## Features
+- CSV Uploader and Manager that stores metadata and keeps the five most recent files.
+- Parts forecasting and maintenance tasking modules exposed through a JSON API.
+- Roles for Planner, Supervisor and Admin with local authentication.
+- Responsive React interface using Material UI and D3 heat-map visualisations.
 
 ## Setup
-
-1. **Install Docker & Compose v2**
-   Follow the [Docker Engine installation guide for Ubuntu](https://docs.docker.com/engine/install/ubuntu/).
-2. **Install PostgreSQL 16**
-   Use the [PostgreSQL Ubuntu instructions](https://www.postgresql.org/download/linux/ubuntu/) to add the PGDG repo and install `postgresql-16`.
-3. **Install Node.js 20**
-   Either use nvm or the [NodeSource setup script](https://github.com/nodesource/distributions#debinstall).
-4. **Clone this repository** and create a `.env` file with your database URL and OAuth secrets.
-5. **Build and run** the containers:
+1. **Install prerequisites**: Docker, Compose v2, PostgreSQL 16 and Node.js 20.
+2. **Clone this repository** and copy `.env.example` to `.env` with your credentials.
+3. **Build and run** the containers:
    ```bash
    docker compose build
    docker compose up -d
    ```
-6. **Apply migrations** and create a Django superuser:
+4. **Apply migrations** and create a superuser:
    ```bash
    docker compose exec backend python manage.py migrate
    docker compose exec backend python manage.py createsuperuser
    ```
 
-## Basic Usage
-Visit `http://localhost:8000` after the containers start. Upload the required CSV
-files to generate parts forecasts and maintenance tasking data.
+## Development
+Run tests with:
+```bash
+docker compose exec backend pytest
+# frontend tests
+docker compose exec frontend npm test
+```
+
+## Contributing
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines and development tips.
+
