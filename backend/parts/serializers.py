@@ -5,3 +5,4 @@ class UploadedCSVSerializer(serializers.ModelSerializer):
     class Meta:
         model = UploadedCSV
         fields = ["id", "original_name", "file", "uploaded_at"]
+        read_only_fields = ["original_name", "uploaded_at"]
